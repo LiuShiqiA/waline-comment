@@ -1,0 +1,20 @@
+{
+  "name": "@waline/cloudbase",
+  "version": "1.0.26",
+  "description": "cloudbase server for waline comment system",
+  "keywords": [
+    "cloudbase",
+    "waline"
+  ],
+  "license": "MIT",
+  "author": "lizheming<i@imnerd.org>",
+  "repository": {
+    "url": "https://github.com/walinejs/waline",
+    "directory": "packages/cloudbase"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "@waline/vercel": "workspace:*",
+    "thinkjs": "4.0.0-alpha.0"
+  }
+}

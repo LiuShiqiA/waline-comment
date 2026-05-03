@@ -1,0 +1,48 @@
+name: 'publish @waline/client'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/release-client.yml
+      - packages/client/**
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build API
+        run: pnpm run api:build
+
+      - name: Build Client
+        run: pnpm run client:build
+
+      - name: WorkSpace DepCheck
+        run: node scripts/workspace-publish.js @waline/client
+
+      - name: Publish NPM
+        uses: JS-DevTools/npm-publish@v4
+        with:
+          package: ./packages/client

@@ -1,0 +1,50 @@
+name: Deploy theme docs
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Install Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build API
+        run: pnpm run api:build
+
+      - name: Build Client
+        run: pnpm run client:build
+
+      - name: Build Docs
+        run: |-
+          pnpm run docs:build
+          > docs/src/.vuepress/dist/.nojekyll
+
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: docs/src/.vuepress/dist
+          ssh-key: ${{ secrets.SSH_TOKEN }}
+          repository-name: walinejs/walinejs.github.io

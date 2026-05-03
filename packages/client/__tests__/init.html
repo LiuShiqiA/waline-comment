@@ -1,0 +1,27 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Waline init test</title>
+    <link rel="stylesheet" href="../dist/waline.css" />
+  </head>
+  <body>
+    阅读量: <span id="/" class="waline-pageview-count"></span> 评论数:
+    <span id="/" class="waline-comment-count"></span>
+    <div id="waline" style="max-width: 800px; margin: 0 auto"></div>
+    <script type="module">
+      import { init } from '../dist/waline.js';
+
+      init({
+        el: '#waline',
+        serverURL: 'https://walinejs.comment.lithub.cc',
+        lang: 'en-US',
+        path: '/',
+        pageview: true,
+        reactions: true,
+        emoji: ['//unpkg.com/@waline/emojis@1.1.0/bilibili', '//unpkg.com/@waline/emojis@1.1.0/qq'],
+      });
+    </script>
+  </body>
+</html>
