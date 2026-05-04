@@ -11,7 +11,13 @@ module.exports = () => async (ctx, next) => {
     ctx.throw(502);
   }
 
-  ctx.state.oauthServices = oauthResp.services || [];
+  const allowed = process.env.OAUTH_PROVIDERS
+    ? process.env.OAUTH_PROVIDERS.split(/\s*,\s*/)
+    : null;
+
+  ctx.state.oauthServices = allowed
+    ? oauthResp.services.filter(({ name }) => allowed.includes(name))
+    : oauthResp.services;
 
   await next();
 };
